@@ -7,6 +7,8 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://example.com/functions" prefix="f" %>
+
 <html>
 <head>
     <title>Meals</title>
@@ -27,10 +29,9 @@
     <tbody id="mainTable">
 
     <jsp:useBean id="meals" scope="request" type="java.util.List"/>
-    <jsp:useBean id="format" scope="request" type="java.util.List"/>
     <c:forEach var="meal" items="${meals}">
         <tr style="color: ${meal.excess ? "red" : "green"}">
-            <td datatype="">${meal.dateTime}</td>
+            <td>${f:formatDateTime(meal.dateTime)}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
             <td></td>
