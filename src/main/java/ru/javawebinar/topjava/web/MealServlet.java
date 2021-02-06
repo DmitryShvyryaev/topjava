@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -46,9 +47,36 @@ public class MealServlet extends HttpServlet {
             dao.deleteMeal(id);
             List<MealTo> meals = MealsUtil.filteredByStreams(dao.getAllMeals(), LocalTime.MIN, LocalTime.MAX, 2000);
             req.setAttribute("meals", meals);
+        } else if (action.equalsIgnoreCase("addMeal")) {
+            Meal meal = new Meal(LocalDateTime.now(), "", 0);
+            meal.setId(0);
+            req.setAttribute("meal", meal);
+            forward = "showMeal.jsp";
         }
 
-
         req.getRequestDispatcher(forward).forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.debug("get post");
+        req.setCharacterEncoding("UTF-8");
+
+        int id = Integer.parseInt(req.getParameter("id"));
+        LocalDateTime localDateTime = TimeUtil.getDateTime(req.getParameter("date"));
+        String description = req.getParameter("description");
+        Integer calories = Integer.parseInt(req.getParameter("calories"));
+
+        Meal meal = new Meal(localDateTime, description, calories);
+        meal.setId(id);
+        log.debug(meal.toString());
+
+        if (id == 0) {
+            dao.addMeal(meal);
+        } else {
+            dao.updateMeal(meal);
+        }
+
+        resp.sendRedirect("/topjava/meals");
     }
 }

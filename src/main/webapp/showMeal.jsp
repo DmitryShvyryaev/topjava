@@ -37,19 +37,25 @@
     }
 </style>
 <jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
-<form method="POST" action="/meals">
+<form method="POST" action="/topjava/meals">
     <div>DateTime</div>
-    <label for="date"></label><input style="min-width: 300px" type="datetime-local" id="date" value="${meal.dateTime}"/>
+    <label>
+        <input style="min-width: 300px" type="datetime-local" name="date" value="${meal.dateTime}"/>
+    </label>
     <br>
 
     <div>Description</div>
-    <label for="description"></label><input style="min-width: 300px" type="text" id="description" value="${meal.description}"/>
+    <label>
+        <input style="min-width: 300px" type="text" name="description" value="${meal.description}"/>
+    </label>
     <br>
 
-    <input type="hidden" value="update" name="myAction"/>
+    <input type="hidden" value="${meal.id}" name="id"/>
 
     <div>Calories</div>
-    <label for="calories"></label><input style="min-width: 300px" id="calories" value="${meal.calories}"/>
+    <label>
+        <input style="min-width: 300px" name="calories" value="${meal.calories}"/>
+    </label>
     <br>
 
     <input type="submit" value="Save" class="button">

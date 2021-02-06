@@ -14,24 +14,32 @@
     <title>Meals</title>
 </head>
 <body>
-<h3><a href="index.html">Home</a></h3>
-<hr>
-<h2>Meals</h2>
+
 <style>
     table {
         border: 2px solid black;
         border-collapse: collapse;
+        margin-top: 20px;
     }
+
     table th, table td {
         border: 1px solid black;
         padding: 4px 6px;
         min-width: 100px;
         font-size: 16px;
     }
+
     table th {
         background-color: darkseagreen;
     }
 </style>
+
+<h3><a href="index.html">Home</a></h3>
+<hr>
+<h2>Meals</h2>
+
+<a href="/topjava/meals?action=addMeal">Add Meal</a>
+
 <table>
     <tr>
         <th>Date</th>

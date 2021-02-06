@@ -47,7 +47,8 @@ public class MealsDaoLmpl implements MealsDAO {
     }
 
     @Override
-    public void updateMeal(int id) {
-
+    public void updateMeal(Meal meal) {
+        data.put(meal.getId(), meal);
     }
+
 }
