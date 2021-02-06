@@ -48,7 +48,7 @@ public class MealServlet extends HttpServlet {
             List<MealTo> meals = MealsUtil.filteredByStreams(dao.getAllMeals(), LocalTime.MIN, LocalTime.MAX, 2000);
             req.setAttribute("meals", meals);
         } else if (action.equalsIgnoreCase("addMeal")) {
-            Meal meal = new Meal(LocalDateTime.now(), "", 0);
+            Meal meal = new Meal(LocalDateTime.of(2021, 1, 1, 0, 0, 0, 0), "", 0);
             meal.setId(0);
             req.setAttribute("meal", meal);
             forward = "showMeal.jsp";
@@ -65,15 +65,17 @@ public class MealServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         LocalDateTime localDateTime = TimeUtil.getDateTime(req.getParameter("date"));
         String description = req.getParameter("description");
-        Integer calories = Integer.parseInt(req.getParameter("calories"));
+        int calories = Integer.parseInt(req.getParameter("calories"));
 
         Meal meal = new Meal(localDateTime, description, calories);
         meal.setId(id);
         log.debug(meal.toString());
 
         if (id == 0) {
+            log.debug("added Meal");
             dao.addMeal(meal);
         } else {
+            log.debug("updated meal");
             dao.updateMeal(meal);
         }
 
