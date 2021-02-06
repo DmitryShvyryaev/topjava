@@ -17,9 +17,23 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-
-<table border="2px" cellpadding="6px" style="border-collapse: collapse" class="table">
-    <tr bgcolor="#5f9ea0">
+<style>
+    table {
+        border: 2px solid black;
+        border-collapse: collapse;
+    }
+    table th, table td {
+        border: 1px solid black;
+        padding: 4px 6px;
+        min-width: 100px;
+        font-size: 16px;
+    }
+    table th {
+        background-color: darkseagreen;
+    }
+</style>
+<table>
+    <tr>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
@@ -34,8 +48,8 @@
             <td>${f:formatDateTime(meal.dateTime)}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td></td>
-            <td></td>
+            <td><a href="meals?action=getById&id=${meal.id}">Update</a></td>
+            <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
         </tr>
     </c:forEach>
 

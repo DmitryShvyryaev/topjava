@@ -9,19 +9,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealsDaoLmpl implements MealsDAO {
     private final Map<Integer, Meal> data = new ConcurrentHashMap<>();
-    private static Integer id = 0;
+    private static AtomicInteger id = new AtomicInteger(0);
 
     public MealsDaoLmpl() {
-        data.put(1, new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
-        data.put(2, new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
-        data.put(3, new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
-        data.put(4, new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100));
-        data.put(5, new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
-        data.put(6, new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
-        data.put(7, new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
+        addMeal(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
+        addMeal(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
+        addMeal(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
+        addMeal(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100));
+        addMeal(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
+        addMeal(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
+        addMeal(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
     }
 
     @Override
@@ -30,17 +31,23 @@ public class MealsDaoLmpl implements MealsDAO {
     }
 
     @Override
+    public Meal getMeal(int id) {
+        return data.get(id);
+    }
+
+    @Override
     public void addMeal(Meal meal) {
-        data.put(++id, meal);
+        meal.setId(id.incrementAndGet());
+        data.put(meal.getId(), meal);
     }
 
     @Override
-    public void deleteMeal() {
-
+    public void deleteMeal(int id) {
+        data.remove(id);
     }
 
     @Override
-    public void updateMeal() {
+    public void updateMeal(int id) {
 
     }
 }
