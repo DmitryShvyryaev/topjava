@@ -6,18 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://example.com/functions" prefix="f" %>
 <html>
 <head>
     <title>Edit meal</title>
 </head>
 <body>
+<jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
+
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>Edit meal</h2>
+<h2>${meal.id == 0 ? "Add meal" : "Edit meal"}</h2>
 <style>
-    .button{
+    .button {
         background: #eee;
         color: #000;
         text-decoration: none;
@@ -30,23 +32,27 @@
         font-family: Arial;
         appearance: push-button;
     }
+
     form input, form select {
-        margin: 3px 0px 14px 0px;
+        margin: 3px 0 14px 0;
         padding: 2px 6px;
         font-size: 14px;
     }
 </style>
-<jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
+
 <form method="POST" action="/topjava/meals">
     <div>DateTime</div>
     <label>
-        <input style="min-width: 300px" type="datetime-local" name="date" value="${meal.dateTime}"/>
+        <input style="min-width: 300px" required type="datetime-local" placeholder="Введите дату:"
+               name="date" value="${meal.dateTime}"/>
     </label>
     <br>
 
     <div>Description</div>
     <label>
-        <input style="min-width: 300px" type="text" name="description" value="${meal.description}"/>
+        <input style="min-width: 300px" required type="text" placeholder="Введите описание:" minlength="1"
+               maxlength="50"
+               name="description" value="${meal.description}"/>
     </label>
     <br>
 
@@ -54,7 +60,8 @@
 
     <div>Calories</div>
     <label>
-        <input style="min-width: 300px" name="calories" value="${meal.calories}"/>
+        <input style="min-width: 300px" required type="number" name="calories" min="1" max="10000"
+               placeholder="Введите количество калорий:" value="${meal.calories}"/>
     </label>
     <br>
 

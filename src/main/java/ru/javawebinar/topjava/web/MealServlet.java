@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -48,7 +49,7 @@ public class MealServlet extends HttpServlet {
             List<MealTo> meals = MealsUtil.filteredByStreams(dao.getAllMeals(), LocalTime.MIN, LocalTime.MAX, 2000);
             req.setAttribute("meals", meals);
         } else if (action.equalsIgnoreCase("addMeal")) {
-            Meal meal = new Meal(LocalDateTime.of(2021, 1, 1, 0, 0, 0, 0), "", 0);
+            Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 0);
             meal.setId(0);
             req.setAttribute("meal", meal);
             forward = "showMeal.jsp";

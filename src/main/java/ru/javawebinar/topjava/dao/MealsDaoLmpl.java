@@ -12,8 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealsDaoLmpl implements MealsDAO {
-    private final Map<Integer, Meal> data = new ConcurrentHashMap<>();
     private static AtomicInteger id = new AtomicInteger(0);
+    private final Map<Integer, Meal> data = new ConcurrentHashMap<>();
 
     public MealsDaoLmpl() {
         addMeal(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
