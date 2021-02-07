@@ -28,7 +28,6 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("get request");
 
-        String forward = "meals.jsp";
         String action = req.getParameter("action");
 
         log.debug("request Parameter Action = " + action);
@@ -36,26 +35,24 @@ public class MealServlet extends HttpServlet {
         if (action == null || action.isEmpty()) {
             List<MealTo> meals = MealsUtil.filteredByStreams(dao.getAllMeals(), LocalTime.MIN, LocalTime.MAX, 2000);
             req.setAttribute("meals", meals);
+            req.getRequestDispatcher("meals.jsp").forward(req, resp);
         } else if (action.equalsIgnoreCase("getById")) {
             int id = Integer.parseInt(req.getParameter("id"));
             log.debug("id is " + id);
             Meal meal = dao.getMeal(id);
             req.setAttribute("meal", meal);
-            forward = "showMeal.jsp";
+            req.getRequestDispatcher("showMeal.jsp").forward(req, resp);
         } else if (action.equalsIgnoreCase("delete")) {
             int id = Integer.parseInt(req.getParameter("id"));
             log.debug("id is " + id);
             dao.deleteMeal(id);
-            List<MealTo> meals = MealsUtil.filteredByStreams(dao.getAllMeals(), LocalTime.MIN, LocalTime.MAX, 2000);
-            req.setAttribute("meals", meals);
+            resp.sendRedirect("/topjava/meals");
         } else if (action.equalsIgnoreCase("addMeal")) {
             Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 0);
             meal.setId(0);
             req.setAttribute("meal", meal);
-            forward = "showMeal.jsp";
+            req.getRequestDispatcher("showMeal.jsp").forward(req, resp);
         }
-
-        req.getRequestDispatcher(forward).forward(req, resp);
     }
 
     @Override

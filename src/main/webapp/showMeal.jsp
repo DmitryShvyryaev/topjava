@@ -40,7 +40,7 @@
     }
 </style>
 
-<form method="POST" action="/topjava/meals">
+<form method="POST" action="<c:url value="/meals"/>">
     <div>DateTime</div>
     <label>
         <input style="min-width: 300px" required type="datetime-local" placeholder="Введите дату:"
@@ -66,7 +66,7 @@
     <br>
 
     <input type="submit" value="Save" class="button">
-    <a href="/topjava/meals" class="button">Cancel</a>
+    <a href="<c:url value="/meals"/>" class="button">Cancel</a>
 </form>
 
 </body>
