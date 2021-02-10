@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://example.com/functions" prefix="f" %>
 
 <html>
@@ -38,7 +38,7 @@
 <hr>
 <h2>Meals</h2>
 
-<a href="/topjava/meals?action=addMeal">Add Meal</a>
+<a href="<c:url value="/meals?action=addMeal"/>">Add Meal</a>
 
 <table>
     <tr>
