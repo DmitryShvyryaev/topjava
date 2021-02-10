@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealsDaoLmpl implements MealsDAO {
-    private static AtomicInteger id = new AtomicInteger(0);
+    private static final AtomicInteger id = new AtomicInteger(0);
     private final Map<Integer, Meal> data = new ConcurrentHashMap<>();
 
     public MealsDaoLmpl() {
