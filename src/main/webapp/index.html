@@ -7,8 +7,40 @@
 <h3>Проект <a href="https://github.com/JavaWebinar/topjava" target="_blank">Java Enterprise (Topjava)</a></h3>
 <hr>
 <ul>
+    <style>
+        li {
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        label {
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        select {
+            padding: 2px 4px;
+        }
+
+        button {
+            margin: 7px 10px 0 0;
+            font-size: 14px;
+            padding: 2px 4px;
+        }
+    </style>
+
     <li><a href="users">Users</a></li>
     <li><a href="meals">Meals</a></li>
+    <hr>
+    <form action="users" method="post">
+        <label>
+            <select name="userId">
+                <option>1</option>
+                <option>2</option>
+            </select>
+            <button type="submit">Change user</button>
+        </label>
+    </form>
 </ul>
 </body>
 </html>
