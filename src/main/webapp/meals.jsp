@@ -23,6 +23,56 @@
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
+    <style>
+        div {
+            display: inline-grid;
+            font-size: 16px;
+            font-style: normal;
+            margin: 0 30px 0 0
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        button {
+            margin: 7px 10px 0 0;
+            font-size: 14px;
+            padding: 2px 4px;
+        }
+
+        .filter {
+            background: lightblue;
+            padding: 10px;
+            width: 700px;
+            border: 1px solid black;
+            border-radius: 7px;
+        }
+    </style>
+    <form class="filter">
+        <div>
+            <label for="startDate">from date (included)</label>
+            <input name="startDate" id="startDate" type="date">
+        </div>
+        <div>
+            <label for="endDate">to date (included)</label>
+            <input name="endDate" id="endDate" type="date">
+        </div>
+        <div>
+            <label for="startTime">from time (included)</label>
+            <input name="startTime" id="startTime" type="time">
+        </div>
+        <div>
+            <label for="endTime">to time (included)</label>
+            <input name="endTime" id="endTime" type="time">
+        </div>
+        <br>
+        <button type="submit">Filter</button>
+        <form action="meals" method="get">
+            <button type="submit">Cancel</button>
+        </form>
+    </form>
+    <br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
