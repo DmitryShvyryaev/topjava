@@ -4,10 +4,15 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.UserRepository;
+import ru.javawebinar.topjava.web.SecurityUtil;
+import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SpringMain {
     public static void main(String[] args) {
@@ -18,18 +23,11 @@ public class SpringMain {
 //            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
 
             //test
-            UserRepository repository = appCtx.getBean(UserRepository.class);
+            MealRepository repository = appCtx.getBean(MealRepository.class);
+            MealRestController controller = appCtx.getBean(MealRestController.class);
 
-            System.out.println("");
-            repository.getAll().forEach(System.out::println);
-            System.out.println("");
-            User user = repository.getByEmail("dmitry@mail.ru");
-            System.out.println(user);
-            user.setName("Grisha");
-            System.out.println(repository.save(user));
-            System.out.println(repository.get(2));
-            System.out.println(repository.delete(2));
-            repository.getAll().forEach(System.out::println);
+//            repository.getAll(2).forEach(System.out::println);
+            controller.getAllWithFilter().forEach(System.out::println);
         }
     }
 }
