@@ -1,13 +1,7 @@
 package ru.javawebinar.topjava.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
-import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletException;
@@ -21,13 +15,19 @@ import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
 
-    private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
-
     private MealRestController controller;
+    private ClassPathXmlApplicationContext context;
 
     @Override
     public void init() {
-        controller = new ClassPathXmlApplicationContext("spring/spring-app.xml").getBean(MealRestController.class);
+        context = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        controller = context.getBean(MealRestController.class);
+    }
+
+    @Override
+    public void destroy() {
+        context.close();
+        super.destroy();
     }
 
     @Override
@@ -53,6 +53,8 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
+        System.out.println(request.getParameter("startDate"));
+
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
@@ -67,9 +69,13 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
+            case "filter":
+                request.setAttribute("meals", controller.getAllWithFilter(request));
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                break;
             case "all":
             default:
-                request.setAttribute("meals", controller.getAllWithFilter(request));
+                request.setAttribute("meals", controller.getAll());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

@@ -50,6 +50,7 @@
         }
     </style>
     <form class="filter">
+        <input type="hidden" name="action" value="filter">
         <div>
             <label for="startDate">from date (included)</label>
             <input name="startDate" id="startDate" type="date">
