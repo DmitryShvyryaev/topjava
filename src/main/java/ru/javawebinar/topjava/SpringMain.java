@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,10 +13,7 @@ public class SpringMain {
 //            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
 //            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
 
-        Map<Integer, Integer> map = new ConcurrentHashMap<>();
-        map.put(1, 1);
-
-        System.out.println(map.remove(2));
+        String str = "2021-02-03";
     }
 }
 //}

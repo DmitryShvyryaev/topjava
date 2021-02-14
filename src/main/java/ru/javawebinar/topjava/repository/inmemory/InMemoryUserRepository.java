@@ -20,14 +20,6 @@ public class InMemoryUserRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
     private final Map<Integer, User> repository = new ConcurrentHashMap<>();
 
-    {
-        save(new User(1, "Taisia", "taya@mail.ru", "111", Role.USER));
-        save(new User(2, "Dmitry", "dmitry@mail.ru", "111", Role.ADMIN, Role.USER));
-        save(new User(3, "Alexy", "alexy@mail.ru", "111", Role.USER));
-        save(new User(4, "Michail", "mich@mail.ru", "111", Role.USER));
-        save(new User(5, "Johanson", "jaoh@mail.ru", "111", Role.USER));
-    }
-
     @Override
     public boolean delete(int id) {
         log.info("delete {}", id);
@@ -57,7 +49,7 @@ public class InMemoryUserRepository implements UserRepository {
         log.info("getAll");
         List<User> users = new ArrayList<>(repository.values());
         //sorting
-        users.sort(Comparator.comparing(AbstractNamedEntity::getName));
+        users.sort(Comparator.comparing(User::getName).thenComparing(User::getEmail));
 
         return users;
     }

@@ -9,9 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MealServlet extends HttpServlet {
 
@@ -53,8 +59,6 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        System.out.println(request.getParameter("startDate"));
-
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
@@ -70,12 +74,15 @@ public class MealServlet extends HttpServlet {
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "filter":
-                request.setAttribute("meals", controller.getAllWithFilter(request));
+                Map<String, Temporal> filterParameter = getParsedFilter(request);
+                request.setAttribute("meals", controller.getAllWithFilter(filterParameter));
+                request.setAttribute("filter", filterParameter);
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 request.setAttribute("meals", controller.getAll());
+                request.setAttribute("filter", new HashMap<>());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
@@ -84,5 +91,21 @@ public class MealServlet extends HttpServlet {
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
+    }
+
+    private Map<String, Temporal> getParsedFilter(HttpServletRequest req) {
+        HashMap<String, Temporal> result = new HashMap<>();
+
+        String startDateString = req.getParameter("startDate");
+        String endDateString = req.getParameter("endDate");
+        String startTimeString = req.getParameter("startTime");
+        String endTimeString = req.getParameter("endTime");
+
+        result.put("startDate", startDateString.isEmpty() ? null : LocalDate.parse(startDateString));
+        result.put("endDate", endDateString.isEmpty() ? null : LocalDate.parse(endDateString));
+        result.put("startTime", startTimeString.isEmpty() ? null : LocalTime.parse(startTimeString));
+        result.put("endTime", endTimeString.isEmpty() ? null : LocalTime.parse(endTimeString));
+
+        return result;
     }
 }

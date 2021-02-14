@@ -12,7 +12,9 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.Temporal;
 import java.util.List;
+import java.util.Map;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
@@ -32,25 +34,23 @@ public class MealRestController {
         return service.getAll(SecurityUtil.authUserId(), SecurityUtil.authUserCaloriesPerDay());
     }
 
-    public List<MealTo> getAllWithFilter(HttpServletRequest req) {
+    public List<MealTo> getAllWithFilter(Map<String, Temporal> filter) {
         log.info("get All Meals with Filter");
 
-        String startDateString = req.getParameter("startDate");
-        String endDateString = req.getParameter("endDate");
-        String startTimeString = req.getParameter("startTime");
-        String endTimeString = req.getParameter("endTime");
-
-        LocalDate startDate = startDateString == null || startDateString.isEmpty() ? LocalDate.MIN : LocalDate.parse(startDateString);
-        LocalDate endDate = endDateString == null || endDateString.isEmpty() ? LocalDate.MAX : LocalDate.parse(endDateString);
-        LocalTime startTime = startTimeString == null || startTimeString.isEmpty() ? LocalTime.MIN : LocalTime.parse(startTimeString);
-        LocalTime endTime = endTimeString == null || endTimeString.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTimeString);
+        LocalDate startDate = (LocalDate) filter.get("startDate");
+        LocalDate endDate = (LocalDate) filter.get("endDate");
+        LocalTime startTime = (LocalTime) filter.get("startTime");
+        LocalTime endTime = (LocalTime) filter.get("endTime");
 
         log.debug(String.format("Filter: start date - %s, end date - %s, start time - %s, end time %s",
                 startDate, endDate, startTime, endTime));
 
         return service.getAllWithFilter(SecurityUtil.authUserId(),
                 SecurityUtil.authUserCaloriesPerDay(),
-                startDate, endDate, startTime, endTime);
+                startDate == null ? LocalDate.MIN : startDate,
+                endDate == null ? LocalDate.MAX : endDate,
+                startTime == null ? LocalTime.MIN : startTime,
+                endTime == null ? LocalTime.MAX : endTime);
     }
 
     public Meal get(int id) {

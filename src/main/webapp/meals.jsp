@@ -17,6 +17,10 @@
     </style>
 </head>
 <body>
+
+<script>
+</script>
+
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
@@ -49,30 +53,30 @@
             border-radius: 7px;
         }
     </style>
-    <form class="filter">
+    <jsp:useBean id="filter" type="java.util.Map" scope="request"/>
+    <form class="filter" action="<c:url value="/meals"/>">
         <input type="hidden" name="action" value="filter">
         <div>
             <label for="startDate">from date (included)</label>
-            <input name="startDate" id="startDate" type="date">
+            <input name="startDate" id="startDate" type="date" value=${filter.get("startDate")}>
         </div>
         <div>
             <label for="endDate">to date (included)</label>
-            <input name="endDate" id="endDate" type="date">
+            <input name="endDate" id="endDate" type="date" value=${filter.get("endDate")}>
         </div>
         <div>
             <label for="startTime">from time (included)</label>
-            <input name="startTime" id="startTime" type="time">
+            <input name="startTime" id="startTime" type="time" value=${filter.get("startTime")}>
         </div>
         <div>
             <label for="endTime">to time (included)</label>
-            <input name="endTime" id="endTime" type="time">
+            <input name="endTime" id="endTime" type="time" value=${filter.get("endTime")}>
         </div>
         <br>
         <button type="submit">Filter</button>
-        <form action="meals" method="get">
-            <button type="submit">Cancel</button>
-        </form>
+        <button name="cancel">Cancel</button>
     </form>
+
     <br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
