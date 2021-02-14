@@ -15,11 +15,9 @@
             color: red;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-
-<script>
-</script>
 
 <section>
     <h3><a href="index.html">Home</a></h3>
@@ -74,8 +72,15 @@
         </div>
         <br>
         <button type="submit">Filter</button>
-        <button name="cancel">Cancel</button>
+        <button id="cancel">Cancel</button>
     </form>
+
+    <script>
+        $('#cancel').on('click', function() {
+            $("form").find('input[type=date], input[type=time]').val('');
+            return false;
+        });
+    </script>
 
     <br>
     <table border="1" cellpadding="8" cellspacing="0">
