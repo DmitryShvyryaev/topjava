@@ -78,7 +78,6 @@
     <script>
         $('#cancel').on('click', function() {
             $("form").find('input[type=date], input[type=time]').val('');
-            return false;
         });
     </script>
 

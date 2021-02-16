@@ -21,7 +21,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = Integer.parseInt(req.getParameter("userId"));
+        int id = Integer.parseInt(req.getParameter("userId"));
         log.debug("select current user: " + id);
         SecurityUtil.setAuthUserId(id);
         resp.sendRedirect("/topjava");
