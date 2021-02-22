@@ -3,13 +3,13 @@ package ru.javawebinar.topjava.service;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.Util;
@@ -31,6 +31,10 @@ import static ru.javawebinar.topjava.MealTestData.*;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+
+    static {
+        SLF4JBridgeHandler.install();
+    }
 
     @Autowired
     private MealService mealService;
@@ -142,7 +146,7 @@ public class MealServiceTest {
     }
 
     @Test
-    public void createDublicate() {
+    public void createDuplicate() {
         Assert.assertThrows(DataAccessException.class, () ->
                 mealService.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0),
                         "Завтрак", 500), USER_ID));
