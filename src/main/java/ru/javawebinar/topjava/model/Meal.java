@@ -1,12 +1,14 @@
 package ru.javawebinar.topjava.model;
 
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,6 +16,7 @@ import java.time.LocalTime;
 @NamedQueries({
         @NamedQuery(name = Meal.FIND, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = Meal.UPDATE, query = "UPDATE Meal m SET m.dateTime=:dateTime, m.description=:description, m.calories=:calories WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.ALL_FILTER, query = "SELECT m FROM Meal m WHERE m.user.id=:userId AND " +
                 "m.dateTime >= :startDateTime AND m.dateTime < :endDateTime ORDER BY m.dateTime DESC")
 })
@@ -24,10 +27,10 @@ public class Meal extends AbstractBaseEntity {
     public static final String FIND = "Meal.find";
     public static final String ALL = "Meal.all";
     public static final String ALL_FILTER = "Meal.filter";
+    public static final String UPDATE = "Meal.update";
 
     @Column(name = "date_time")
     @NotNull
-    @Size(max = 50)
     private LocalDateTime dateTime;
 
     @Column(name = "description")

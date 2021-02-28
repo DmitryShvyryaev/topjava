@@ -28,14 +28,23 @@ public class JpaMealRepository implements MealRepository {
             entityManager.persist(meal);
             return meal;
         } else {
-            entityManager.merge(meal);
-            return null;
+            Meal m = get(meal.id(), userId);
+            if (m == null)
+                return null;
+            User ref = entityManager.getReference(User.class, userId);
+            meal.setUser(ref);
+            return entityManager.merge(meal);
         }
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
-        return false;
+        Meal removed = get(id, userId);
+        if (removed == null)
+            return false;
+        entityManager.remove(removed);
+        return true;
     }
 
     @Override
