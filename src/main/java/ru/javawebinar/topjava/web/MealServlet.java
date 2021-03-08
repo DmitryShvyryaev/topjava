@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.web;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.web.meal.MealRestController;
@@ -22,12 +23,15 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
 public class MealServlet extends HttpServlet {
 
-    private ConfigurableApplicationContext springContext;
+    private GenericXmlApplicationContext springContext;
     private MealRestController mealController;
 
     @Override
     public void init() {
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext = new GenericXmlApplicationContext();
+        springContext.getEnvironment().setActiveProfiles("postgres", "datajpa");
+        springContext.load("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext.refresh();
         mealController = springContext.getBean(MealRestController.class);
     }
 
@@ -45,7 +49,7 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
 
-        if (StringUtils.hasLength(request.getParameter("id"))) {
+        if (!StringUtils.hasLength(request.getParameter("id"))) {
             mealController.create(meal);
         } else {
             mealController.update(meal, getId(request));
