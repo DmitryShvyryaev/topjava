@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.validateEntity;
+
 @Repository
 @Transactional(readOnly = true)
 public class JdbcUserRepository implements UserRepository {
@@ -62,6 +64,8 @@ public class JdbcUserRepository implements UserRepository {
     @Transactional
     @Override
     public User save(User user) {
+        validateEntity(user);
+
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
         List<Role> roles = new ArrayList<>(user.getRoles());
