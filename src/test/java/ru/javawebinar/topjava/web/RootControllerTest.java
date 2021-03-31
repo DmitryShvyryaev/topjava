@@ -46,7 +46,7 @@ class RootControllerTest extends AbstractControllerTest {
                         new AssertionMatcher<List<MealTo>>() {
                             @Override
                             public void assertion(List<MealTo> mealTos) throws AssertionError {
-                                TestMatcher.usingIgnoringFieldsComparator(null, "")
+                                MealTestData.MEAL_TO_MATCHER
                                         .assertMatch(mealTos, MealsUtil.getTos(MealTestData.meals, MealsUtil.DEFAULT_CALORIES_PER_DAY));
                             }
                         }));
