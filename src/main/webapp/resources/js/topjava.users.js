@@ -44,10 +44,25 @@ $(function () {
             ]
         })
     );
+
+    $('.checkbox').click(function () {
+        enableUser($(this).closest('tr').attr('id'), $(this).prop('checked'));
+    })
 });
 
 function updateTable() {
     $.get(ctx.ajaxUrl, function (data) {
         ctx.datatableApi.clear().rows.add(data).draw();
     });
+}
+
+function enableUser(id, enable) {
+    $.ajax({
+        type: 'POST',
+        url: ctx.ajaxUrl + id + '/enable',
+        data: {enable: enable}
+    }).done(function () {
+        updateTable();
+        successNoty("Enable");
+});
 }
