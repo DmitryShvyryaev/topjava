@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
+import static ru.javawebinar.topjava.util.ValidationUtil.parseValidationException;
 
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
@@ -29,10 +31,10 @@ public class ExceptionInfoHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(BindException.class)
-    public ErrorInfo bindingException(HttpServletRequest req, BindException bindException) {
+    @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
+    public ErrorInfo bindingException(HttpServletRequest req, BindException exception) {
         log.error(VALIDATION_ERROR + " at request " + req.getRequestURL());
-        return ValidationUtil.parseValidationException(req.getRequestURL(), bindException.getBindingResult());
+        return parseValidationException(req.getRequestURL(), exception.getBindingResult());
     }
 
     //  http://stackoverflow.com/a/22358422/548473

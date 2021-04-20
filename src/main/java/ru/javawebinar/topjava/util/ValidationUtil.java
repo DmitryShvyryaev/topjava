@@ -81,15 +81,17 @@ public class ValidationUtil {
 
     public static ResponseEntity<String> getErrorResponse(BindingResult result) {
         return ResponseEntity.unprocessableEntity().body(
-                result.getFieldErrors().stream()
-                        .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                        .collect(Collectors.joining("<br>"))
+                getErrorsFromBindingResult(result)
         );
     }
 
     public static ErrorInfo parseValidationException(CharSequence url, BindingResult result) {
-        return new ErrorInfo(url, ErrorType.VALIDATION_ERROR, result.getFieldErrors().stream()
+        return new ErrorInfo(url, ErrorType.VALIDATION_ERROR, getErrorsFromBindingResult(result));
+    }
+
+    private static String getErrorsFromBindingResult(BindingResult result) {
+        return result.getFieldErrors().stream()
                 .map((fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage())))
-                .collect(Collectors.joining("<br>")));
+                .collect(Collectors.joining("<br>"));
     }
 }
