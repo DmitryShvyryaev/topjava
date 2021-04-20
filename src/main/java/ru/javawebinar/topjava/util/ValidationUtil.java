@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.BindingResult;
 import ru.javawebinar.topjava.HasId;
+import ru.javawebinar.topjava.util.exception.ErrorInfo;
+import ru.javawebinar.topjava.util.exception.ErrorType;
 import ru.javawebinar.topjava.util.exception.IllegalRequestDataException;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -83,5 +85,11 @@ public class ValidationUtil {
                         .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
                         .collect(Collectors.joining("<br>"))
         );
+    }
+
+    public static ErrorInfo parseValidationException(CharSequence url, BindingResult result) {
+        return new ErrorInfo(url, ErrorType.VALIDATION_ERROR, result.getFieldErrors().stream()
+                .map((fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage())))
+                .collect(Collectors.joining("<br>")));
     }
 }
