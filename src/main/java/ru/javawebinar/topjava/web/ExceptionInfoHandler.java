@@ -22,6 +22,8 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Map;
+
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 import static ru.javawebinar.topjava.util.ValidationUtil.parseValidationException;
 
@@ -29,6 +31,11 @@ import static ru.javawebinar.topjava.util.ValidationUtil.parseValidationExceptio
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
+
+    private static Map<String, String> CONSTRAINS = Map.of(
+            "users_unique_email_idx", "User with this email already exists",
+            "meals_unique_user_datetime_idx", "Meal with same date and time already exist"
+    );
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
@@ -47,6 +54,14 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
+        String message = e.getRootCause().getMessage();
+        if (message != null) {
+            for (Map.Entry<String, String> pair : CONSTRAINS.entrySet()) {
+                if (message.contains(pair.getKey())) {
+                    return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR, pair.getValue());
+                }
+            }
+        }
         return logAndGetErrorInfo(req, e, true, DATA_ERROR);
     }
 
